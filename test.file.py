@@ -2,11 +2,38 @@ import time
 
 import requests
 from config import Params
+from abc import ABC, abstractmethod
 
 parameters = Params()
-team_id =parameters.team_id
-
+team_id = parameters.team_id
+print('start')
 BaseURL = 'https://mephi.opentoshi.net/api/v1'
+temperature_range = {'critical':1200,'mid':1180,'range': [1150,1300]}
+water_range = {'critical':0,'mid':40,'range':[0,100]}
+radiation_range = {'critical':150,'mid':120,'range':[100,250]}
+
+class Reactor(abs):
+    @abstractmethod
+    def __init__(self):
+        pass
+
+    def get_data(self, id):
+        url = f'{BaseURL}/reactor/data?team_id={id}'
+        # print(url)
+        connection = requests.get(url)
+        self.data = connection.json()
+        return self.data
+
+    def create_reactor(self, id):
+        # url = f'https://mephi.opentoshi.net/api/v1/reactor/create_reactor?team_id={id}'
+        url = f'{BaseURL}/reactor/create_reactor?team_id={id}'
+        connection = requests.post(url)
+        data = connection.json()
+        return data
+
+class TemperatureSensor(Reactor):
+    def __init__(self):
+
 
 def register_team():
     # url = f'https://mephi.opentoshi.net/api/v1/team/register'
@@ -84,17 +111,22 @@ data = get_data(team_id)
 
 import asyncio
 import aiohttp
-
+print('monitor start')
 async def monitor():
-    async with aiohttp.ClientSession() as session:
+    async with aiohttp.ClientSession() as session: # соединение
         while True:
-            async with session.get('https://mephi.opentoshi.net/api/v1/reactor/data') as response:
+            id = team_id
+            async with session.get(f'https://mephi.opentoshi.net/api/v1/reactor/data?team_id={id}') as response: # дополнили соединение конкретным url
                 data = await response.json()
                 print(data)
+                print(f'RESULTS:'
+                      f'\ntemperature: {get_reactor_info(data).get("temperature")}'
+                      f'\nwater_level: {get_reactor_info(data).get("water_level")}'
+                      f'\nradiation: {get_reactor_info(data).get("radiation")}')
             await asyncio.sleep(1)
 
-asyncio.run()
-
+asyncio.run(monitor())
+print('monitor end')
 
 print(f'RESULTS:'
       # f'\nteam_id: {team_id}'
