@@ -32,9 +32,7 @@ radiation_range = {'critical':150,'mid':120,'range':[100,250]}
 #         connection = requests.post(url)
 #         data = connection.json()
 #         return data
-#
-# class TemperatureSensor(Reactor):
-#     def __init__(self):
+
 
 
 def register_team():
@@ -93,6 +91,14 @@ def get_temperature(data:dict):
     temperature = data.get('data').get('reactor_state').get('temperature')
     return temperature
 
+def get_water(data:dict):
+    temperature = data.get('data').get('reactor_state').get('water_level')
+    return temperature
+
+def get_radiation(data:dict):
+    radiation = data.get('data').get('reactor_state').get('radiation')
+    return radiation
+
 def get_reactor_info(data:dict) -> dict:
     temperature = data.get('data').get('reactor_state').get('temperature')
     water_level = data.get('data').get('reactor_state').get('water_level')
@@ -107,7 +113,7 @@ def get_reactor_info(data:dict) -> dict:
         'history': history,
     }
 
-# reset = reset_reactor(team_id)
+reset = reset_reactor(team_id)
 
 data = get_data(team_id)
 
@@ -138,8 +144,8 @@ print(f'RESULTS:'
       #   f'\nreset_reactor: {reset}'
       #   f'\nrefill_water: {refill_water(team_id, 10.0)}'
         f'\ninfo: {get_reactor_info(data)}'
-        f'\ntemperature: {get_reactor_info(data).get("temperature")}'
-        f'\nwater_level: {get_reactor_info(data).get("water_level")}'
+        f'\ntemperature: {get_temperature(data)}'
+        f'\nwater_level: {get_water(data)}'
         f'\nradiation: {get_reactor_info(data).get("radiation")}'
         f'\nhistory: {get_history(team_id)}')
 

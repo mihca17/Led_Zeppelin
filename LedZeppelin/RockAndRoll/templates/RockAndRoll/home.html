@@ -6,9 +6,16 @@
   </head>
   <body>
         <div id="Buttons">
-            <button class="btn" id="temp"></button>
-            <button class="btn" id="water"></button>
-            <button class="btn" id="rad"></button>
+            <form method="post">
+                {% csrf_token %}
+                <button type = "submit" class="btn" id="temp" name="temp">TEMP</button>
+                <button type = "submit" class="btn" id="water" name="water">WATER</button>
+                <button type = "submit" class="btn" id="rad" name="rad">RAD</button>
+            </form>
+        </div>
+
+        <div id="result">
+
         </div>
 
         <div id="Charts">
@@ -24,18 +31,36 @@
             <canvas id="waterChart"></canvas>
           </div>
         </div>
-  
 
       <canvas id="radiationChart"></canvas>
       <h1>aaa</h1>
   </body>
 <script>
+
+<!--    function handleAct(action){-->
+<!--      const data = new FormData();-->
+<!--      data.append('action', action)-->
+<!--      data.append('csrfmiddlewaretoken', document.querySelector('[name=csrfmiddlewaretoken]').value);-->
+
+<!--          fetch('', {-->
+<!--              method: 'POST',-->
+<!--              headers: {-->
+<!--                  'X-Requested-With': 'XMLHttpRequest',-->
+<!--              },-->
+<!--              body: data-->
+<!--      })-->
+<!--      .then(response => response.json())-->
+<!--      .then(data => {-->
+<!--          document.getElementById('result').textContent = data.message;-->
+<!--      })-->
+<!--    }-->
+
+
+
     let chart
     let temperatureChart
     let waterChart
-    let radiationChart 
-
-
+    let radiationChart
 
     async function updateChart(){
       const response = await fetch('/api/data/');
@@ -53,9 +78,9 @@
             data: {
               labels: data.labels,
               datasets: [{
-                label: 'LABEL',
+                label: 'Температура',
                 data: data.values,
-                backgroundColor: 'blue'
+                backgroundColor: 'red'
               }]
             }
           });
@@ -63,7 +88,7 @@
     }
 
     async function updateChart2(){
-      const response = await fetch('/api/data/');
+      const response = await fetch('/api/data2/');
       const data = await response.json();
 
       if (temperatureChart){
@@ -78,7 +103,7 @@
             data: {
               labels: data.labels,
               datasets: [{
-                label: 'LABEL',
+                label: 'Уровень воды',
                 data: data.values,
                 backgroundColor: 'blue'
               }]
@@ -88,7 +113,7 @@
     }
 
     async function updateChart3(){
-      const response = await fetch('/api/data/');
+      const response = await fetch('/api/data3/');
       const data = await response.json();
 
       if (waterChart){
@@ -103,9 +128,9 @@
             data: {
               labels: data.labels,
               datasets: [{
-                label: 'LABEL',
+                label: 'Радиация',
                 data: data.values,
-                backgroundColor: 'blue'
+                backgroundColor: 'green'
               }]
             }
           });
