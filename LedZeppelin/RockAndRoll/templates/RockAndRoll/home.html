@@ -16,7 +16,7 @@
                 <button type = "submit" class="btn btn-warning" id="reset" name="reset">Перезапуск реактора</button>
                 <button type = "submit" class="btn btn-primary" id="cooling" name="cooling">Охлаждение</button>
                 <button type = "submit" class="btn btn-primary" id="refill" name="refill">Долить воду</button>
-
+                <input type = "number" name="number" required placeholder="Введите количество воды">
             </form>
             <form method="post" style="display:flex; flex-direction:column; gap:15px; margin: 10px">
                 {% csrf_token %}

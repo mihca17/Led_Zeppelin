@@ -84,9 +84,9 @@ def get_radiation(data:dict):
 
 # Это наша основная функция, генерации главной страницы:
 def home(request):
-    print(f'request {request}')
+
     if request.method == "POST":
-        # print('home POST')
+        print(f'request {request.POST.get("number")}')
         if 'reset' in request.POST:
             reset_reactor(team_id)
             print('RESET')
@@ -95,6 +95,8 @@ def home(request):
         elif 'shutdown' in request.POST:
             emergency_shutdown(team_id)
         elif 'refill' in request.POST:
+            if request.POST.get("number"):
+                refill_water(team_id, int(request.POST.get("number")))
             refill_water(team_id, 10.0)
         else:
             print('Error')
@@ -159,8 +161,9 @@ def chart2(request):
         storage.water = VarData
     print(f'Water LEVEL {water}')
     if water <= 40:
-        print('WATER~~~~~')
-        activate_cooling(team_id, 50)
+        refill_water(team_id, 10)
+    if water <= 1:
+        emergency_shutdown(team_id)
 
     data = {
         'labels':['1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16','17','18','19','20'],
@@ -183,6 +186,8 @@ def chart3(request):
         storage.rad = VarData
     if radiation > 150:
         activate_cooling(team_id, 150)
+    if radiation > 200:
+        emergency_shutdown(team_id)
 
     data = {
         'labels':['1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16','17','18','19','20'],
