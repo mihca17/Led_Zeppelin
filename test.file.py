@@ -12,27 +12,29 @@ temperature_range = {'critical':1200,'mid':1180,'range': [1150,1300]}
 water_range = {'critical':0,'mid':40,'range':[0,100]}
 radiation_range = {'critical':150,'mid':120,'range':[100,250]}
 
-class Reactor(abs):
-    @abstractmethod
-    def __init__(self):
-        pass
+# class Team(ABC):
 
-    def get_data(self, id):
-        url = f'{BaseURL}/reactor/data?team_id={id}'
-        # print(url)
-        connection = requests.get(url)
-        self.data = connection.json()
-        return self.data
 
-    def create_reactor(self, id):
-        # url = f'https://mephi.opentoshi.net/api/v1/reactor/create_reactor?team_id={id}'
-        url = f'{BaseURL}/reactor/create_reactor?team_id={id}'
-        connection = requests.post(url)
-        data = connection.json()
-        return data
-
-class TemperatureSensor(Reactor):
-    def __init__(self):
+# class Reactor(abs):
+#     @abstractmethod
+#     def __init__(self):
+#         pass
+#
+#     def get_data(self, id):
+#         url = f'{BaseURL}/reactor/data?team_id={id}'
+#         # print(url)
+#         connection = requests.get(url)
+#         self.data = connection.json()
+#
+#     def create_reactor(self, id):
+#         # url = f'https://mephi.opentoshi.net/api/v1/reactor/create_reactor?team_id={id}'
+#         url = f'{BaseURL}/reactor/create_reactor?team_id={id}'
+#         connection = requests.post(url)
+#         data = connection.json()
+#         return data
+#
+# class TemperatureSensor(Reactor):
+#     def __init__(self):
 
 
 def register_team():
